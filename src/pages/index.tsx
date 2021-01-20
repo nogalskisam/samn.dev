@@ -2,7 +2,7 @@ import * as React from "react"
 import Layout from "../components/layout"
 
 // styles
-const pageStyles = {
+const pageStyles: React.CSSProperties = {
   color: "#232129",
   padding: "96px",
 }
@@ -15,7 +15,7 @@ const headingAccentStyles = {
   color: "#663399",
 }
 const aireLogicStyle = {
-  color: 'green'
+  color: "green"
 }
 const paragraphStyles = {
   marginBottom: 48,
@@ -24,14 +24,14 @@ const listStyles = {
   marginBottom: 96,
   paddingLeft: 0,
 }
-const listItemStyles = {
-  fontWeight: "300",
+const listItemStyles: React.CSSProperties = {
+  fontWeight: 300,
   fontSize: "24px",
   maxWidth: "560px",
   listStyleType: "none",
 }
 
-const linkStyle = {
+const linkStyle: React.CSSProperties = {
   color: "#8954A8",
   fontWeight: "bold",
   fontSize: "16px",
@@ -90,7 +90,7 @@ const IndexPage = () => {
       </p>
       <ul style={listStyles}>
         {links.map(link => (
-          <li style={{ ...listItemStyles, color: link.color }}>
+          <li style={{ ...listItemStyles }}>
             <span>
               <a
                 style={linkStyle}
