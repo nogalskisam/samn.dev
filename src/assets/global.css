@@ -1,0 +1,140 @@
+body {
+    font-family: "Roboto Mono", monospace;
+    margin: 0;
+    overflow: scroll;
+    background-color: #133b5c;
+    color: #fcdab7;
+    position: absolute;
+    width: 100vw;
+}
+
+.header {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 36px;
+    background-color: #1d2d50;
+    padding-bottom: 150px;
+}
+
+.header > img {
+    order: 1;
+}
+
+.header > h1 {
+    margin-bottom: 20px;
+    order: 2;
+    width: 80%;
+    text-align: center;
+}
+
+
+.header > h2 {
+    order: 3;
+    width: 80%;
+    text-align: center;
+}
+
+.header > span .accent1,
+.header > h1 .accent1,
+.header > h2 .accent1 {
+    color: #1e5f74;
+}
+
+.header > span .accent2,
+.header > h1 .accent2,
+.header > h2 .accent2 {
+    color: #73ef37;
+}
+
+.header > h2 > a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.header >h2 > a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    padding-left: 144px;
+    padding-right: 144px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+
+.links {
+    order: 2;
+    align-content: right;
+}
+
+.links > ul {
+    padding-left: 0;
+    /* text-align: right; */
+}
+
+.links > ul > li {
+    font-weight: 300;
+	font-size: 24px;
+	list-style-type: none;
+}
+
+.links > ul > li > span > a {
+    color: #8954A8;
+    font-weight: bold;
+    font-size: 16px;
+    vertical-align: 5%;
+    /* text-align: right; */
+}
+
+.links > ul > li > span > p {
+    font-size: 14px;
+    text-align: right;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+p {
+    text-align: justify;
+}
+
+@media only screen and (max-width: 1023px) {
+    .header > h1 {
+        font-size: 1.6em;
+    }
+
+    .header > h2 {
+        font-size: 1.4em;
+    }
+
+    .header > h1,
+    .header > h2 {
+        /* width: 95%; */
+    }
+
+    .content {
+        padding-left: 24px;
+        padding-right: 24px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+}
+
+@media only screen
+    and (max-width: 600px) {
+        body {
+            position: absolute;
+        }
+
+        .links {
+            display: none;
+        }
+
+        .links-mobile {
+            display: flex;
+        }
+    }

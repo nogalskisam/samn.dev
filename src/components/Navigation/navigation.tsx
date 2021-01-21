@@ -1,5 +1,6 @@
 import React from "react";
-import NavItem from "./NavItem/navItem";
+import styles from "./navigation.module.css";
+import { Link } from "gatsby";
 
 const links = [
     {
@@ -8,28 +9,21 @@ const links = [
     },
     {
         text: "Blog",
-        url: "./blog"
+        url: "/blog"
     },
     {
         text: "Contact",
-        url: "./contact"
+        url: "/contact"
     }
 ]
 
-const navClass: React.CSSProperties = {
-    width: '100%',
-    height: 150,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    padding: 50
-}
-
 const Navigation = () => {
     return (
-        <div style={navClass}>
+        <div className={styles.nav}>
             {links.map(link => (
-                <NavItem link={link} />
+                <Link to={link.url} className={styles.navItem} activeClassName={styles.active}>
+                    {link.text}
+                </Link>
             ))}
         </div>
     )

@@ -1,0 +1,22 @@
+.about {
+    order: 1;
+    max-width: 70%;
+}
+
+.logoPanel {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.logoPanel > img {
+    flex: 0 0 15%;
+    width: 300px;
+    order: 1;
+    height: 200px;
+    padding: 25px 100px;
+}
+
+@media only screen and (max-width: 600px) {
+}
