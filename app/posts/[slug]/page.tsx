@@ -1,4 +1,4 @@
-import { getPostBySlug } from "@/lib/mdx";
+import { getAllPosts, getPostBySlug } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 const components = {
@@ -6,6 +6,13 @@ const components = {
     <h1 style={{ color: "red", fontSize: "48px" }}>{children}</h1>
   ),
 };
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export default async function Post({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug);
