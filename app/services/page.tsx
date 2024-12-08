@@ -14,7 +14,7 @@ const services = [
     details: [
       "Architecture design and review",
       "Code quality improvement",
-      "Performance optimization",
+      "Performance optimisation",
       "Scalability planning",
     ],
   },
@@ -43,22 +43,22 @@ const services = [
     ],
   },
   {
-    title: "Legacy Modernization",
+    title: "Legacy Modernisation",
     icon: Cog,
     description:
-      "Upgrade and refactor outdated systems. Analyze existing systems, propose modernization strategies, and implement upgrades with minimal disruption.",
+      "Upgrade and refactor outdated systems. Analyse existing systems, propose modernisation strategies, and implement upgrades with minimal disruption.",
     details: [
       "System analysis",
       "Refactoring strategies",
       "Data migration",
-      "Incremental modernization",
+      "Incremental modernisation",
     ],
   },
   {
     title: "DevOps Implementation",
     icon: Server,
     description:
-      "Streamline development and operations processes. Set up and optimize CI/CD pipelines, implement containerization, and manage cloud infrastructure.",
+      "Streamline development and operations processes. Set up and optimise CI/CD pipelines, implement containerisation, and manage cloud infrastructure.",
     details: [
       "CI/CD pipeline setup",
       "Container orchestration",
