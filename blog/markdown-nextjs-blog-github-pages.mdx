@@ -1,0 +1,288 @@
+---
+title: Deploying a static NextJS site with Markdown content to GitHub Pages
+date: "2024-12-08"
+description: I deployed my NextJS site to GitHub Pages. This is how I did it.
+tags: ["nextjs", "github", "pages"]
+---
+
+I've been working on this site for a couple of days. I often see online questions of "what's the best way to deploy a NextJS site?" and "how should I deploy my static NextJS site?". Often, those questions comes with the words "free", "cheap", or "easy". Thankfully, statically built NextJS sites are easy to create and deploy, and GitHub Pages is free.
+
+I've been using NextJS at [Axol](https://axol.team) for a while now, and I've found it really enjoyable and easy to work with. For portfolio sites, NextJS makes a lot of sense. Sure, you can use Jekyll or Hugo, but NextJS is a modern framework that allows you to build a site with a lot of dynamic functionality if you need it. Javascript is also one of the most popular programming languages in the world, so getting started should be pretty simple for a lot of people. NextJS also has some great features for dynamically generating your pages at build time, which I'll touch on later.
+
+One of the benefits of doing this is, similarly to both Hugo and Jekyll, you can write your content in Markdown. This is a great way to write content.
+
+While in this site and example I'm using MDX, you can also use regular markdown files. I've used MDX because it gives me the ability to use JSX in my markdown files in the future, which is useful for adding components.
+
+## Step 1: Create a new NextJS site with Tailwind CSS and create some content
+
+Create a new NextJS site using the following command:
+
+```bash
+npx create-next-app@latest
+npm install -D tailwindcss @tailwindcss/typography
+npx tailwindcss init
+```
+
+And in your `tailwind.config.js` file, add the following:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  theme: {
+    // ...
+  },
+  plugins: [
+    require("@tailwindcss/typography"),
+    // ...
+  ],
+};
+```
+
+## Step 2: Create your blog routes
+
+Presuming you wish to make a blog, create a new folder in the `app` folder called `blog`. Then, create a new file in the `blog` folder called `page.tsx`.
+
+Then, create a new folder in the `blog` folder called `[slug]`. Inside that folder, create a new file called `page.tsx`.
+
+In NextJS, your `blog` folder is a static route, so you can browse to `your-site.com/blog` to view your blog posts. The `[slug]` folder is a dynamic route. In our example, NextJS will automatically generate a page for each of your blog posts.
+
+```bash
+mkdir app/blog
+touch app/blog/page.tsx
+mkdir app/blog/[slug]
+touch app/blog/[slug]/page.tsx
+```
+
+## Step 3: Amend your NextJS pages
+
+In order for your site to display the content you've created, you'll need to amend your `blog/page.tsx` and `blog/[slug]/page.tsx` files.
+
+### blog/page.tsx
+
+You probably want to display a list of all your blog posts. You can do this by fetching all the files in the `blog` folder and displaying them.
+
+```tsx
+async function getAllPosts(): Promise<BlogPost[]> {
+  const slugs = fs.readdirSync(postsDirectory);
+  const posts = await Promise.all(slugs.map((slug) => getPostBySlug(slug)));
+  return posts.sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+}
+
+export async function BlogPage() {
+  const posts = await getAllPosts();
+
+  return (
+    <div>
+      {posts.map((post) => (
+        <div key={post.slug}>{post.title}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+To cover the code in this snippet:
+
+- `getAllPosts` is a function that fetches all the blog posts from the `blog` folder
+
+- `BlogPage` is the main page for your blog. It will display a list of all your blog posts
+
+### blog/[slug]/page.tsx
+
+Then you need to create a page within the `[slug]` folder that will display the content of the blog post. As mentioned earlier, `[slug]`, is a dynamic route. In this example, the `[slug]` represents the file name of your markdown file, ie. if your file is called `my-blog-post.mdx`, then your route will be `https://my-site.com/blog/my-blog-post`.
+
+```tsx
+import fs from "fs";
+import path from "path";
+import { compileMDX } from "next-mdx-remote/rsc";
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+async function getPostBySlug(slug: string): Promise<BlogPost> {
+  const realSlug = slug.replace(/\.mdx$/, "");
+  const fullPath = path.join(postsDirectory, `${realSlug}.mdx`);
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { frontmatter, content } = await compileMDX({
+    source: fileContents,
+    options: { parseFrontmatter: true },
+  });
+
+  return {
+    slug: realSlug,
+    title: frontmatter.title as string,
+    date: frontmatter.date as string,
+    description: frontmatter.description as string,
+    tags: frontmatter.tags as string[],
+    content: content,
+  };
+}
+
+export default async function BlogPostPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const post = await getPostBySlug(params.slug);
+
+  return (
+    <article className="prose prose-lg dark:prose-invert">
+      <h1>{post.title}</h1>
+      <p>{post.description}</p>
+      <div>
+        {post.tags.map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </div>
+      <time>{post.date}</time>
+
+      {post.content}
+    </article>
+  );
+}
+```
+
+To cover the code in this snippet:
+
+- `generateStaticParams` is a function that generates the static parameters for your blog posts. This is used to create the dynamic routes for your blog posts. This runs at build time to generate all of the pages for your blog site.
+
+- `getPostBySlug` is a function that fetches a single blog post by its slug. This is used to fetch the content of a single blog post.
+
+- `BlogPostPage` is the page for a single blog post. It will display the content of a single blog post.
+
+- We give the the `<article>` element a class of `prose prose-lg dark:prose-invert`. This is using the `prose` class from Tailwind CSS Typography to style the content of the blog post.
+
+Source: [NextJS - generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params)
+
+## Step 4: Create some content
+
+Create a new folder as a sibling to the `app` folder called `blog`. Then, create a new Markdown file in your new `blog` folder.
+
+```bash
+mkdir blog
+touch blog/my-first-blog-post.mdx
+```
+
+Give your markdown file some content.
+
+```mdx
+---
+title: My First Blog Post
+date: "2024-12-08"
+description: This is my first blog post
+tags: ["nextjs", "blog", "markdown"]
+---
+
+# My First Blog Post
+
+This is my first blog post.
+```
+
+The stuff between the `---` lines is called the frontmatter. It's used to set the metadata for your blog post. We display it on screen when we generate your static site files.
+
+## Step 5: Amend your next.config.mjs
+
+Your `next.config.mjs` file needs amending so that you can enable the `export` setting, which generates your static pages at build time. It also needs amending for markdown.
+
+```js
+import createMDX from "@next/mdx";
+
+/** @type {import('next').NextConfig} */
+
+const nextConfig = {
+  output: "export",
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+};
+
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
+
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig);
+```
+
+## Step 6: Create your GitHub action workflow
+
+Create your GitHub action workflow folder so that GitHub can deploy your site to GitHub Pages.
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # or your default branch
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+## Step 7: Commit and push your changes
+
+Assuming you've already created a repository on GitHub, you can commit and push your changes to your repository.
+
+```bash
+git add .
+git commit -m "Deploying my blog to GitHub Pages"
+git push
+```
+
+## Step 8: Enable GitHub Pages
+
+We need to enable GitHub Pages for your repository.
+
+1. Go to your repository on GitHub, click on the `Settings` tab
+1. Then click on the `Pages` tab. Under `Source`, select `GitHub Actions`
+1. If you have a custom domain, enter it in the `Custom domain` field. Otherwise, leave it blank.
+1. Click `Save`.
+1. Once your site has been built, you should see a message saying "Your site is ready to be published at ...". Click on the link to view your site.
+
+## Step 9: Enjoy your site!
+
+You've now deployed your site to GitHub Pages! 🎉

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
+import { compileMDX } from "next-mdx-remote/rsc";
 
 const postsDirectory = path.join(process.cwd(), "blog");
 
@@ -10,7 +10,7 @@ export type BlogPost = {
   date: string;
   description: string;
   tags: string[];
-  content: string;
+  content: React.ReactElement;
 };
 
 export async function getPostBySlug(slug: string): Promise<BlogPost> {
@@ -18,14 +18,17 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
   const fullPath = path.join(postsDirectory, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   // console.log(fileContents);
-  const { data, content } = matter(fileContents);
+  const { frontmatter, content } = await compileMDX({
+    source: fileContents,
+    options: { parseFrontmatter: true },
+  });
 
   return {
     slug: realSlug,
-    title: data.title,
-    date: data.date,
-    description: data.description,
-    tags: data.tags,
+    title: frontmatter.title as string,
+    date: frontmatter.date as string,
+    description: frontmatter.description as string,
+    tags: frontmatter.tags as string[],
     content: content,
   };
 }

@@ -1,11 +1,11 @@
 import { getAllPosts, getPostBySlug } from "@/lib/mdx";
-import { MDXRemote } from "next-mdx-remote/rsc";
+// import { MDXRemote } from "next-mdx-remote/rsc";
 
-const components = {
-  h1: ({ children }: { children: React.ReactNode }) => (
-    <h1 style={{ color: "red", fontSize: "48px" }}>{children}</h1>
-  ),
-};
+// const components = {
+//   h1: ({ children }: { children: React.ReactNode }) => (
+//     <h1 style={{ color: "red", fontSize: "48px" }}>{children}</h1>
+//   ),
+// };
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -18,10 +18,10 @@ export default async function Post({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug);
 
   return (
-    <article className="container mx-auto space-y-4 px-4 py-8 prose prose-lg">
-      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-      <p className="text-gray-600">{post.description}</p>
-      <div className="flex gap-2 mb-4">
+    <article className="container mx-auto space-y-4 px-4 py-8 prose prose-lg dark:prose-invert">
+      <h1>{post.title}</h1>
+      <p className="text-muted-foreground">{post.description}</p>
+      <div className="flex gap-2">
         {post.tags.map((tag) => (
           <span
             key={tag}
@@ -31,8 +31,9 @@ export default async function Post({ params }: { params: { slug: string } }) {
           </span>
         ))}
       </div>
-      <time className="text-gray-500">{post.date}</time>
-      <MDXRemote components={{ components }} source={post.content} />
+      <time className="text-muted-foreground pt-2">{post.date}</time>
+
+      {post.content}
     </article>
   );
 }
