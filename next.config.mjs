@@ -4,8 +4,6 @@ import createMDX from "@next/mdx";
 
 const nextConfig = {
   output: "export",
-  basePath: "",
-  assetPrefix: "",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
