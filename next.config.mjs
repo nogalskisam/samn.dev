@@ -1,14 +1,23 @@
 import createMDX from "@next/mdx";
 
 /** @type {import('next').NextConfig} */
+const isGithubActions = process.env.GITHUB_ACTIONS || false;
+
+let assetPrefix = "";
+let basePath = "";
+
+if (isGithubActions) {
+  // Trim off `refs/heads` to get the branch name
+  const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, "");
+  assetPrefix = `/${repo}/`;
+  basePath = `/${repo}`;
+}
+
 const nextConfig = {
   output: "export",
-  // Configure base path for GitHub Pages deployment
-  basePath: process.env.BASE_URL,
-  assetPrefix: process.env.ASSET_PREFIX,
-  // Configure `pageExtensions` to include markdown and MDX files
+  basePath: basePath,
+  assetPrefix: assetPrefix,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  // Optionally, add any other Next.js config below
 };
 
 const withMDX = createMDX({
