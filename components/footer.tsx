@@ -8,6 +8,9 @@ const Footer = () => (
         <p className="text-center text-sm leading-loose text-muted-foreground">
           Built by samn.dev. All rights reserved.
         </p>
+        <p className="text-center text-sm leading-loose text-muted-foreground">
+          Company number 16116652
+        </p>
       </div>
     </div>
   </footer>
