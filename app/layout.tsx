@@ -5,28 +5,62 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { StructuredData } from "@/components/structured-data";
 
 export const metadata: Metadata = {
   title: {
-    default: "Samn Dev Ltd - Professional IT Services & Development",
+    default: "Sam Nogalski - Software Engineering & AI Coding Deployment | Lovable v0 base44",
     template: "%s | samn.dev",
   },
   description:
-    "Expert IT consulting and development services. Specializing in modern web development, enterprise solutions, and cutting-edge technologies.",
+    "Deploy your Lovable, v0, and base44 projects to the web. Professional software engineering services from creative AI coding deployments to enterprise development.",
   keywords: [
-    "IT services",
-    "software development",
+    "Lovable deployment",
+    "v0 deployment",
+    "base44 deployment",
+    "AI coding tools",
+    "vibe coding",
+    "software engineering",
+    "technical leadership",
     "web development",
-    "enterprise solutions",
+    "project deployment",
+    "AI generated code",
+    "creative coding",
+    "software architecture",
     "DevOps",
-    "cloud migration",
-    "AI integration",
-    "IT consulting",
-    "IT contractor",
-    "Leeds IT contractor",
+    "enterprise development",
+    "Sam Nogalski",
   ],
   authors: [{ name: "Sam Nogalski" }],
   creator: "Sam Nogalski",
+  publisher: "Sam Nogalski",
+  metadataBase: new URL("https://samn.dev"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://samn.dev",
+    title: "Sam Nogalski - Software Engineering & AI Coding Deployment",
+    description: "Deploy your Lovable, v0, and base44 projects to the web. Professional software engineering services from creative AI coding deployments to enterprise development.",
+    siteName: "samn.dev",
+    images: [
+      {
+        url: "/web-app-manifest-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Sam Nogalski - Software Engineering & AI Coding Deployment",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sam Nogalski - Software Engineering & AI Coding Deployment",
+    description: "Deploy your Lovable, v0, and base44 projects to the web. Professional software engineering services.",
+    images: ["/web-app-manifest-512x512.png"],
+    creator: "@samn_dev",
+  },
   robots: {
     index: true,
     follow: true,
@@ -36,6 +70,14 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "verification-code-here",
+    yandex: "verification-code-here",
+    other: {
+      "msvalidate.01": "verification-code-here",
+      "baidu-site-verification": "verification-code-here",
     },
   },
 };
@@ -69,6 +111,12 @@ export default function RootLayout({
           href="/apple-touch-icon.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
+        {/* Plausible Analytics */}
+        <script
+          defer
+          data-domain="samn.dev"
+          src="https://plausible.io/js/script.js"
+        />
       </head>
       <body
         className={cn(
@@ -82,6 +130,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <StructuredData />
           <Header />
           {children}
           <Footer />

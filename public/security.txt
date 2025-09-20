@@ -1,0 +1,9 @@
+Contact: sam@samn.dev
+Expires: 2025-12-31T23:59:59.000Z
+Encryption: https://github.com/nogalskisam.gpg
+Preferred-Languages: en
+Canonical: https://samn.dev/.well-known/security.txt
+
+Policy: If you discover a security vulnerability, please report it responsibly by emailing sam@samn.dev with details. Do not publicly disclose the issue until it has been addressed.
+
+Acknowledgments: Thank you to all security researchers who responsibly disclose vulnerabilities.

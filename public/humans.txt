@@ -1,0 +1,21 @@
+/* TEAM */
+    Developer: Sam Nogalski
+    Contact: sam@samn.dev
+    GitHub: https://github.com/nogalskisam
+    From: Leeds, UK
+
+/* THANKS */
+    Next.js Team for the amazing framework
+    Vercel for hosting and deployment
+    Tailwind CSS for styling
+    Radix UI for components
+    ShadCN for components
+    Framer Motion for animations
+
+/* SITE */
+    Last update: 2025
+    Language: English
+    Doctype: HTML5
+    IDE: VS Code, Claude Code
+    Components: React, TypeScript, Tailwind CSS
+    Deployment: GitHub Actions, GitHub Pages

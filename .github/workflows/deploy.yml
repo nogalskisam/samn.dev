@@ -1,0 +1,59 @@
+name: Deploy and Notify Search Engines
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./out
+
+    - name: Notify Search Engines
+      if: success()
+      run: |
+        echo "Notifying search engines of sitemap updates..."
+
+        # Google
+        curl -s -o /dev/null -w "%{http_code}" "https://www.google.com/ping?sitemap=https://samn.dev/sitemap.xml" || echo "Google ping failed"
+
+        # Bing
+        curl -s -o /dev/null -w "%{http_code}" "https://www.bing.com/ping?sitemap=https://samn.dev/sitemap.xml" || echo "Bing ping failed"
+
+        # Yandex
+        curl -s -o /dev/null -w "%{http_code}" "https://webmaster.yandex.com/ping?sitemap=https://samn.dev/sitemap.xml" || echo "Yandex ping failed"
+
+        echo "Search engine notifications completed"
+
+    - name: Generate Lighthouse Report
+      if: success()
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        urls: |
+          https://samn.dev
+          https://samn.dev/services
+          https://samn.dev/vibe-coding
+        uploadArtifacts: true
+        temporaryPublicStorage: true

@@ -10,19 +10,18 @@ export default function Home() {
         <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
           <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
             <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-              Professional IT Services & Development
+              Software Engineering & Creative Development
             </h1>
             <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-              Delivering high-quality software solutions and IT consulting
-              services. Specialising in modern web development and enterprise
-              solutions.
+              From deploying Lovable, v0, and base44 projects to leading enterprise development teams.
+              I help bring software ideas to life—whether it&apos;s an AI-generated weekend experiment or a mission-critical application.
             </p>
             <div className="space-x-4">
               <Button size="lg" asChild>
-                <Link href="/contact">Get in touch</Link>
+                <Link href="/vibe-coding">Deploy Your Project</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/services">View services</Link>
+                <Link href="/services">View All Services</Link>
               </Button>
             </div>
           </div>
